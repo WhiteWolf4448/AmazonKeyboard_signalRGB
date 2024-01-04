@@ -268,6 +268,7 @@ export function Initialize() {
 }
 
 export function Render() {
+    SendPacket(true);
 }
 
 export function Shutdown() {
