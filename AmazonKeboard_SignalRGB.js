@@ -264,11 +264,11 @@ export function LedPositions() {
 }
 
 export function Initialize() {
-    //initpacket1();
+    initpacket1();
 }
 
 export function Render() {
-    SendPacket();
+    
 }
 
 export function Shutdown() {
@@ -283,7 +283,7 @@ function initpacket1()
   packet[2] = 0x21;
   packet[3] = 0x09;
   
-  device.write(packet,65)
+  device.write(packet,72)
 }
 
 
