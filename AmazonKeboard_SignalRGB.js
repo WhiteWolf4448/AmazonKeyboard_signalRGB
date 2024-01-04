@@ -288,9 +288,16 @@ function initpacket1()
   
   device.send_report(packet,26)
 }
+function waitForInterruptIn() {
+    return new Promise((resolve, reject) => {
+        // Code pour écouter interrupt IN
+        // Resolve le promise une fois l'interrupt IN reçu
+    });
+}
 
-
-function SendPacket(shutdown = false) {
+async function SendPacket(shutdown = false) {
+    try {
+        await waitForInterruptIn();
     //device.set_endpoint(3, 1, 0x81, 0);
     let packet = [];
     packet[0] = 0x14;
@@ -326,6 +333,9 @@ function SendPacket(shutdown = false) {
 
     device.send_report(colorPacket, 18);
     device.pause(2);
+} catch (error) {
+    console.error('Erreur d\'attente du interrupt IN:', error);
+}
 }
 
 function hexToRgb(hex) {
