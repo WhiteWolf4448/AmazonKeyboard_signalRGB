@@ -295,47 +295,50 @@ function waitForInterruptIn() {
     });
 }
 
-async function SendPacket(shutdown = false) {
-    try {
-        await waitForInterruptIn();
+function SendPacket(shutdown = false) {
+    
     //device.set_endpoint(3, 1, 0x81, 0);
     let packet = [];
-    packet[0] = 0x14;
-    packet[1] = 0x00;
+    packet[0] = 0x21;
+    packet[1] = 0x09;
   
-    packet[2] = 0x00;
-    packet[3] = 0x01;
+    packet[2] = 0x20;
+    packet[3] = 0x03;
   
-    packet[4] = 0x01;
-    packet[5] = 0x03;
+    packet[4] = 0x00;
+    packet[5] = 0x00;
+    packet[6] = 0x90;
+    packet[7] = 0x01;
+    packet[8] = 0x20;
 
-    let colorPacket = [0x14,0x00,0x00,0x01,0x01,0x03, 0xff, 0x00, 0x80,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x03B,0x81];
 
 
-    for (let iIdx = 0; iIdx < vKeys.length; iIdx++) {
-        const iPxX = vKeyPositions[iIdx][0];
-        const iPxY = vKeyPositions[iIdx][1];
-        let color;
+	for(let iIdx = 0; iIdx < vLedPositions.length; iIdx++)
+  {
 
-        if (shutdown) {
-            color = hexToRgb(shutdownColor);
-        } else if (LightingMode === "Forced") {
-            color = hexToRgb(forcedColor);
-        } else {
-            color = device.color(iPxX, iPxY);
-        }
+		let iPxX = vLedPositions[iIdx][0];
+		let iPxY = vLedPositions[iIdx][1];
+		var color;
 
-        packet[vKeys[iIdx] * 4 + 8] = 0xff;
-        packet[vKeys[iIdx] * 4 + 9] = color[0];
-        packet[vKeys[iIdx] * 4 + 10] = color[1];
-        packet[vKeys[iIdx] * 4 + 11] = color[2];
-    }
+		if(shutdown)
+    {
+			color = hexToRgb(shutdownColor);
+		}
+    else if (LightingMode === "Forced") 
+    {
+			color = hexToRgb(forcedColor);
+		}
+    else
+    {
+			color = device.color(iPxX, iPxY);
+		}
 
-    device.send_report(colorPacket, 18);
-    device.pause(2);
-} catch (error) {
-    console.error('Erreur d\'attente du interrupt IN:', error);
-}
+		let iLedIdx = (iIdx*3) + 14;
+		packet[iLedIdx] = color[0];
+		packet[iLedIdx+1] = color[1];
+		packet[iLedIdx+2] = color[2];
+	}
+  device.write(packet, 399);
 }
 
 function hexToRgb(hex) {
