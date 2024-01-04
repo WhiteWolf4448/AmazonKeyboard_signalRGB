@@ -268,11 +268,10 @@ export function Initialize() {
 }
 
 export function Render() {
-    sendZone();
 }
 
 export function Shutdown() {
-    sendZone(true);
+    SendPacket(true);
 }
 
 function initpacket1()
@@ -287,7 +286,7 @@ function initpacket1()
 }
 
 
-function sendZone(shutdown = false) {
+function SendPacket(shutdown = false) {
     let packet = [];
         packet[0] = 0x00;
         packet[1] = 0x00;
