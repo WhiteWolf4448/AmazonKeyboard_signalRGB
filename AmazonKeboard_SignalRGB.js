@@ -277,16 +277,7 @@ export function Shutdown() {
 
 function initpacket1()
 {
-  let packet = [];
-  packet[1] = 0x09; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[2] = 0x14; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[3] = 0x03; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[4] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[5] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[6] = 0x13; // Juste un exemple, la valeur réelle doit être déterminée
-  packet[7] = 0x00;
-  
-  device.send_report(packet,26)
+
 }
 function waitForInterruptIn() {
     return new Promise((resolve, reject) => {
@@ -297,26 +288,16 @@ function waitForInterruptIn() {
 
 function SendPacket(shutdown = false) {
 
-
-    let initpacket = [0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-    device.set_endpoint(0x81,65305 ,65305 );
-    device.send_report(initpacket, 64);
-
-    device.set_endpoint(0, 0, 65305);
-
     let packet = [];
     packet[0] = 0x21;
     packet[1] = 0x09;
-  
     packet[2] = 0x20;
     packet[3] = 0x03;
-  
     packet[4] = 0x00;
     packet[5] = 0x00;
     packet[6] = 0x90;
     packet[7] = 0x01;
     packet[8] = 0x20;
-
 
 
 	for(let iIdx = 0; iIdx < vKeyPositions.length; iIdx++)
