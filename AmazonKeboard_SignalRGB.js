@@ -264,7 +264,7 @@ export function LedPositions() {
 }
 
 export function Initialize() {
-    initpacket1();
+    //initpacket1();
 }
 
 export function Render() {
