@@ -264,7 +264,7 @@ export function LedPositions() {
 }
 
 export function Initialize() {
-    initpacket1();
+    //initpacket1();
 }
 
 export function Render() {
@@ -278,8 +278,14 @@ export function Shutdown() {
 function initpacket1()
 {
   let packet = [];
-  packet[0] = 0x09;
-  packet[1] = 0x21;
+  packet[0] = 0x14;
+  packet[1] = 0x00;
+
+  packet[2] = 0x00;
+  packet[3] = 0x01;
+
+  packet[4] = 0x01;
+  packet[5] = 0x03;
   
   device.send_report(packet,64)
 }
@@ -288,8 +294,14 @@ function initpacket1()
 function SendPacket(shutdown = false) {
     //device.set_endpoint(3, 1, 0x81, 0);
     let packet = [];
-        packet[0] = 0x09;
-        packet[1] = 0x21;
+    packet[0] = 0x14;
+    packet[1] = 0x00;
+  
+    packet[2] = 0x00;
+    packet[3] = 0x01;
+  
+    packet[4] = 0x01;
+    packet[5] = 0x03;
 
   
 
@@ -313,7 +325,7 @@ function SendPacket(shutdown = false) {
         packet[vKeys[iIdx] * 4 + 11] = color[2];
     }
 
-    device.send_report(packet, 72);
+    device.send_report(packet, 13);
     device.pause(2);
 }
 
