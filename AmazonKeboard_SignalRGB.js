@@ -297,7 +297,7 @@ function SendPacket(shutdown = false) {
     packet[5] = 0x00;
     packet[6] = 0x90;
     packet[7] = 0x01;
-    packet[8] = 0x20;
+
 
 
 	for(let iIdx = 0; iIdx < vKeyPositions.length; iIdx++)
@@ -325,7 +325,7 @@ function SendPacket(shutdown = false) {
 		packet[iLedIdx+1] = color[1];
 		packet[iLedIdx+2] = color[2];
 	}
-    device.write(packet, 407);
+    device.write(packet, 332);
 }
 
 function hexToRgb(hex) {
