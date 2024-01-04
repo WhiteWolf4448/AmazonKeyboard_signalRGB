@@ -264,7 +264,7 @@ export function LedPositions() {
 }
 
 export function Initialize() {
-
+    initpacket1();
 }
 
 export function Render() {
@@ -274,6 +274,18 @@ export function Render() {
 export function Shutdown() {
     sendZone(true);
 }
+
+function initpacket1()
+{
+  let packet = [];
+  packet[0] = 0x00;
+  packet[1] = 0x00;
+  packet[2] = 0x21;
+  packet[3] = 0x09;
+  
+  device.write(packet,65)
+}
+
 
 function sendZone(shutdown = false) {
     let packet = [];
