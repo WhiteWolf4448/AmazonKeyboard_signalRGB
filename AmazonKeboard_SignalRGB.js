@@ -264,7 +264,7 @@ export function LedPositions() {
 }
 
 export function Initialize() {
-    initpacket1();
+    //initpacket1();
 }
 
 export function Render() {
@@ -313,11 +313,11 @@ function SendPacket(shutdown = false) {
 
 
 
-	for(let iIdx = 0; iIdx < vLedPositions.length; iIdx++)
+	for(let iIdx = 0; iIdx < vKeyPositions.length; iIdx++)
   {
 
-		let iPxX = vLedPositions[iIdx][0];
-		let iPxY = vLedPositions[iIdx][1];
+		let iPxX = vKeyPositions[iIdx][0];
+		let iPxY = vKeyPositions[iIdx][1];
 		var color;
 
 		if(shutdown)
