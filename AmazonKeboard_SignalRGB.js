@@ -283,7 +283,7 @@ function initpacket1()
   packet[2] = 0x21;
   packet[3] = 0x09;
   
-  device.write(packet,72)
+  device.send_report(packet,72)
 }
 
 
@@ -318,7 +318,7 @@ function SendPacket(shutdown = false) {
         packet[vKeys[iIdx] * 4 + 11] = color[2];
     }
 
-    device.write(packet, 72);
+    device.send_report(packet, 72);
     device.pause(2);
 }
 
@@ -333,7 +333,7 @@ function hexToRgb(hex) {
 }
 
 export function Validate(endpoint) {
-    return endpoint.interface === 0x80 && endpoint.usage === 0x0009 && endpoint.usage_page === 0x0008;
+	return endpoint.interface === 0 && endpoint.usage === 0 && endpoint.usage_page === 0;
 }
 
 export function ImageUrl() {
