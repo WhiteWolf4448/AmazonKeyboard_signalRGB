@@ -276,7 +276,15 @@ export function Shutdown() {
 }
 
 function sendZone(shutdown = false) {
-    const packet = [0x00, 0x00, 0x03, 0x13];
+    let packet = [];
+        packet[0] = 0x00;
+        packet[1] = 0x00;
+        packet[2] = 0x21;
+        packet[3] = 0x09;
+        packet[4] = 0x09;
+
+  
+
 
     for (let iIdx = 0; iIdx < vKeys.length; iIdx++) {
         const iPxX = vKeyPositions[iIdx][0];
@@ -297,7 +305,7 @@ function sendZone(shutdown = false) {
         packet[vKeys[iIdx] * 4 + 11] = color[2];
     }
 
-    device.send_report(packet, 400);
+    device.write(packet, 72);
     device.pause(2);
 }
 
@@ -312,7 +320,7 @@ function hexToRgb(hex) {
 }
 
 export function Validate(endpoint) {
-    return endpoint.interface === 129 && endpoint.usage === 0x0009 && endpoint.usage_page === 0x0008;
+    return endpoint.interface === 0x80 && endpoint.usage === 0x0009 && endpoint.usage_page === 0x0008;
 }
 
 export function ImageUrl() {
