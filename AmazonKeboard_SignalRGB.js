@@ -268,7 +268,7 @@ export function Initialize() {
 }
 
 export function Render() {
-    SendPacket();
+    sendRgbColor(255, 0, 0);
 }
 
 export function Shutdown() {
@@ -289,7 +289,24 @@ function initpacket1()
   
   device.send_report(packet,64)
 }
-
+function sendRgbColor(red, green, blue) {
+    // Paquet d'initialisation (64 octets)
+    let initPacket = new Array(64).fill(0);
+    initPacket[1] = 0x09; // Juste un exemple, la valeur réelle doit être déterminée
+    initPacket[2] = 0x21; // Juste un exemple, la valeur réelle doit être déterminée
+    // ...
+    device.sendFeatureReport(initPacket);
+    
+    // Attendre le paquet Interrupt IN ou ignorer si non nécessaire
+    // device.receiveInterruptIn(); // Pseudocode, pas sûr de l'implémentation exacte
+    
+    // Paquet de couleur RGB (19 octets)
+    let colorPacket = [0x14,0x00,0x00,0x01,0x01,0x03, red, green, blue,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x03B,0x81];
+    device.sendFeatureReport(colorPacket);
+    
+    // Envoie d'une demande de Get_Report si nécessaire
+    // let report = device.getFeatureReport(...); // Pseudocode, pas sûr de l'implémentation exacte
+}
 
 function SendPacket(shutdown = false) {
     //device.set_endpoint(3, 1, 0x81, 0);
