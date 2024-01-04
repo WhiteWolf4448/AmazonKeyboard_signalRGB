@@ -276,7 +276,7 @@ export function Shutdown() {
 }
 
 function sendZone(shutdown = false) {
-    const packet = [0x00, , 0x00, 0x03, 0x13];
+    const packet = [0x00, 0x00, 0x03, 0x13];
 
     for (let iIdx = 0; iIdx < vKeys.length; iIdx++) {
         const iPxX = vKeyPositions[iIdx][0];
