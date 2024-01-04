@@ -290,9 +290,6 @@ function SendPacket(shutdown = false) {
     let packet = [];
         packet[0] = 0x09;
         packet[1] = 0x21;
-        packet[2] = 0x00;
-        packet[3] = 0x00;
-        packet[4] = 0x00;
 
   
 
