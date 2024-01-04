@@ -288,6 +288,7 @@ function initpacket1()
 
 
 function SendPacket(shutdown = false) {
+    device.set_endpoint(3, 1, 0x81, 0);
     let packet = [];
         packet[0] = 0x00;
         packet[1] = 0x00;
