@@ -268,7 +268,7 @@ export function Initialize() {
 }
 
 export function Render() {
-    sendRgbColor();
+    SendPacket();
 }
 
 export function Shutdown() {
@@ -278,40 +278,17 @@ export function Shutdown() {
 function initpacket1()
 {
   let packet = [];
-  packet[0] = 0x14;
-  packet[1] = 0x00;
-
-  packet[2] = 0x00;
-  packet[3] = 0x01;
-
-  packet[4] = 0x01;
-  packet[5] = 0x03;
+  packet[1] = 0x09; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[2] = 0x14; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[3] = 0x03; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[4] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[5] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[6] = 0x13; // Juste un exemple, la valeur réelle doit être déterminée
+  packet[7] = 0x00;
   
-  device.send_report(packet,64)
+  device.send_report(packet,26)
 }
-function sendRgbColor(shutdown = false) {
-    // Paquet d'initialisation (64 octets)
-    let initPacket = new Array(64).fill(0);
-    initPacket[1] = 0x09; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[2] = 0x14; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[3] = 0x03; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[4] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[5] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[6] = 0x13; // Juste un exemple, la valeur réelle doit être déterminée
-    initPacket[7] = 0x00; // Juste un exemple, la valeur réelle doit être déterminée
-    // ...
-    device.send_Report(initPacket);
-    
-    // Attendre le paquet Interrupt IN ou ignorer si non nécessaire
-    // device.receiveInterruptIn(); // Pseudocode, pas sûr de l'implémentation exacte
-    
-    // Paquet de couleur RGB (19 octets)
-    let colorPacket = [0x14,0x00,0x00,0x01,0x01,0x03, 0xff, 0x00, 0x80,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x03B,0x81];
-    device.send_Report(colorPacket);
-    
-    // Envoie d'une demande de Get_Report si nécessaire
-    // let report = device.getFeatureReport(...); // Pseudocode, pas sûr de l'implémentation exacte
-}
+
 
 function SendPacket(shutdown = false) {
     //device.set_endpoint(3, 1, 0x81, 0);
@@ -325,7 +302,7 @@ function SendPacket(shutdown = false) {
     packet[4] = 0x01;
     packet[5] = 0x03;
 
-  
+    let colorPacket = [0x14,0x00,0x00,0x01,0x01,0x03, 0xff, 0x00, 0x80,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x03B,0x81];
 
 
     for (let iIdx = 0; iIdx < vKeys.length; iIdx++) {
@@ -347,7 +324,7 @@ function SendPacket(shutdown = false) {
         packet[vKeys[iIdx] * 4 + 11] = color[2];
     }
 
-    device.send_report(packet, 13);
+    device.send_report(colorPacket, 18);
     device.pause(2);
 }
 
