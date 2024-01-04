@@ -18,3 +18,22 @@ devices.forEach(device => {
     }
     console.log('');
 });
+
+const usb = require('usb');
+
+usb.getDeviceList().forEach(device => {
+  console.log(`Device: ${device.deviceDescriptor.idVendor}:${device.deviceDescriptor.idProduct}`);
+
+  try {
+    device.open();
+    device.interfaces.forEach(interface => {
+      console.log(` Interface: ${interface.descriptor.bInterfaceNumber}`);
+      interface.endpoints.forEach(endpoint => {
+        console.log(`   Endpoint: ${endpoint.descriptor.bEndpointAddress}`);
+      });
+    });
+    device.close();
+  } catch (e) {
+    console.error(`Error: ${e.message}`);
+  }
+});
