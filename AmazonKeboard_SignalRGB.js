@@ -358,7 +358,7 @@ function hexToRgb(hex) {
 }
 
 export function Validate(endpoint) {
-	return endpoint.interface === 0 && endpoint.usage === 0 && endpoint.usage_page === 0;
+	return endpoint.interface === 129 && endpoint.usage === 0xFF00 && endpoint.usage_page === 0;
 }
 
 export function ImageUrl() {
