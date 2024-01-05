@@ -333,7 +333,7 @@ function SendPacket(shutdown = false) {
     
     
     
-    device.set_endpoint(1, 0xFF19, 0xFF19, 0x0006);
+    device.set_endpoint(0, 0xFF19, 0xFF19, 0x0006);
     //console.log(packet.length);
     device.send_report(packettest, 400);
 }
