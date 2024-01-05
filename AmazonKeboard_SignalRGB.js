@@ -348,11 +348,10 @@ function hexToRgb(hex) {
 }
 
 export function Validate(endpoint) {
-	return endpoint.interface === 0 && endpoint.usage ===  0xFF19 && endpoint.usage_page === 0xFF19;
-    return endpoint.interface === 0 && endpoint.usage ===  0x0006 && endpoint.usage_page === 0x0001;
+	return endpoint.interface === 0 && endpoint.usage ===  0xFF19 && endpoint.usage_page === 0xFF19 && endpoint.collection === 0x0006;
 }
 export function Validate(endpoint) {
-    return endpoint.interface === 0 && endpoint.usage ===  0x0006 && endpoint.usage_page === 0x0001;
+    return endpoint.interface === 0 && endpoint.usage ===  0x0006 && endpoint.usage_page === 0x0001 && endpoint.collection === 0x0001;
 }
 
 export function ImageUrl() {
