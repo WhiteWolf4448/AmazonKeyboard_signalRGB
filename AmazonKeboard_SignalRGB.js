@@ -325,7 +325,9 @@ function SendPacket(shutdown = false) {
 		packet[iLedIdx+1] = color[1];
 		packet[iLedIdx+2] = color[2];
 	}
-    device.write(packet, 332);
+    console.log(packet.Size);
+    console.log(packet.length);
+    device.send_report(packet, 332);
 }
 
 function hexToRgb(hex) {
