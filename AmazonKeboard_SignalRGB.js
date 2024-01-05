@@ -12,9 +12,9 @@ LightingMode:readonly
 forcedColor:readonly
 */
 
-const Vendpoint_usage = 0x0006;
-const Vendpoint_usage_page = 0x0001;
-const Vendpoint_usage_collection = 0x0001;
+const Vendpoint_usage = 0x0001;
+const Vendpoint_usage_page = 0x01ff;
+const Vendpoint_usage_collection = 0x0004;
 
 export function ControllableParameters() {
     return [
