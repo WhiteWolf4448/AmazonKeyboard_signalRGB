@@ -1,27 +1,15 @@
 // --- Métadonnées ---
 export function Name() { return "Amazon basics Keyboard"; }
-export function VendorId() { return 0x3938; }       // Remplace par ton vendor ID
-export function ProductId() { return 0x1150; }      // Remplace par ton product ID
+export function Type() { return "network"; }
 export function Publisher() { return "Frongus"; }
 export function Documentation() { return ""; }
 export function Size() { return [21,7]; }
 export function ControllableParameters() {
-  const params = [];
-  for (let row = 0; row < map2.length; row++) {
-    for (let col = 0; col < map2[row].length; col++) {
-      let keyName = map2[row][col];
-      if (keyName) {
-        params.push({
-          property: `key_${keyName}`,
-          group: "keys",
-          label: keyName,
-          type: "color",
-          default: "000000"
-        });
-      }
-    }
-  }
-  return params;
+	return [
+		{ "property": "shutdownColor", "group": "lighting", "label": "Shutdown Color", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
+		{ "property": "LightingMode", "group": "lighting", "label": "Lighting Mode", "type": "combobox", "values": ["Canvas", "Forced"], "default": "Canvas" },
+		{ "property": "forcedColor", "group": "lighting", "label": "Forced Color", "min": "0", "max": "360", "type": "color", "default": "#009bde" }
+	];
 }
 
 // --- Variables globales ---
