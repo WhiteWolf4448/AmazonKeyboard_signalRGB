@@ -88,7 +88,7 @@ const keysFlat = flattenMap2();
 
 function generateColorData() {
     let colors = [];
-    for (let i = 0; i < LED_COUNT; i++) {
+    for (let i = 0; i < 110; i++) {
         let r = (i % 3 === 0) ? 255 : 0;
         let g = (i % 3 === 1) ? 255 : 0;
         let b = (i % 3 === 2) ? 255 : 0;
