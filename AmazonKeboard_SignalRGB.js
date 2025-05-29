@@ -44,7 +44,7 @@ export function Initialize() {
         try {
             device.set_interface(iface.number);
             // Envoi d'une commande test (ex : un paquet vide ou spécifique)
-            device.write([0x00, 0x00, ...], 64);
+            device.write(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64);
             console.log("Interface fonctionnelle trouvée:", iface.number);
             found = true;
             break;
