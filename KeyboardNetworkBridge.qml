@@ -16,7 +16,6 @@ Item {
         running: true
         repeat: false  // ne tourne qu’une fois
         onTriggered: {
-                console.log("Device connected:", root.device);
                 discovery.AddDevice();
 
         }
