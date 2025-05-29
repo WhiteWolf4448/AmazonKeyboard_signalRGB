@@ -36,10 +36,11 @@ const map2 = [
     ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr', 'Fn', 'Menu', 'Ctrl_R', 				'←', 			'↓', 			'→', 			'0_P', 				'._P', 'Enter']
 ];
 
+let device = null;
 
 // --- Fonction appelée après validation ---
-export function Initialize(device) {
-	this.device = device; // on stocke l'objet device
+export function Initialize(dev) {
+	device = dev; // on stocke l'objet device
 }
 
 // --- Fonction validation ---
@@ -88,8 +89,8 @@ export function LedPositions() {
 
 // --- Envoie les couleurs au clavier ---
 export function Render() {
-	console.log("Device:", this.device);
-    if (!this.device) return;
+	console.log("Device:", device);
+    if (!device) return;
 
     const pad = (data, length) => {
         while (data.length < length) data.push(0);
@@ -107,7 +108,7 @@ export function Render() {
     for (const data of reports) {
         const packet = [0x00];  // souvent un header requis, à adapter selon protocole clavier
         packet.push(...data);
-        this.device.write(packet, packet.length);
+        device.write(packet, packet.length);
     }
 }
 
