@@ -91,6 +91,7 @@ export function Render() {
 
 
 function insererZeros(sequence, indices) {
+	console.log(typeof sequence);  // Pour voir le type réel
     const sequenceListe = sequence.split(""); // Convertir en tableau de caractères
 
     // Trier les indices pour insérer dans l'ordre croissant
