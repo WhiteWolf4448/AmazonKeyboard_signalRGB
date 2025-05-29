@@ -39,13 +39,14 @@ const map2 = [
 let device = null;
 
 // --- Fonction appelée après validation ---
-export function Initialize(dev) {
-	console.log("Initialisation du périphérique:", dev);
-	device = dev; // on stocke l'objet device
-	if (!device) {
-		console.error("Aucun périphérique trouvé.");
-		return;
-	}
+export function Initialize() {
+    console.log("Initialisation du plugin");
+    device = SignalRGB.getDevice();  // ou la bonne API pour récupérer le device
+    if (!device) {
+        console.error("Aucun périphérique trouvé.");
+        return;
+    }
+    console.log("Périphérique connecté:", device);
 }
 
 // --- Fonction validation ---
