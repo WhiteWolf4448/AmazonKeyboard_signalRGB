@@ -10,7 +10,7 @@ while True:
 
     with open(LOG_PATH, "a") as log_file:
         process = subprocess.Popen(
-            ["python", SCRIPT_PATH],
+            ["pythonw", SCRIPT_PATH],
             stdout=log_file,
             stderr=log_file
         )
