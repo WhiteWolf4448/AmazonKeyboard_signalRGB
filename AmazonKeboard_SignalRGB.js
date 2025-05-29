@@ -40,7 +40,12 @@ let device = null;
 
 // --- Fonction appelée après validation ---
 export function Initialize(dev) {
+	console.log("Initialisation du périphérique:", dev);
 	device = dev; // on stocke l'objet device
+	if (!device) {
+		console.error("Aucun périphérique trouvé.");
+		return;
+	}
 }
 
 // --- Fonction validation ---
