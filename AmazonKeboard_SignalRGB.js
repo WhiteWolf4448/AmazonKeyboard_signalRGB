@@ -39,20 +39,22 @@ const map2 = [
 
 // --- Fonction appelée après validation ---
 export function Initialize() {
-    console.log("Initialisation du plugin");
-
-    if (!device) {
-        console.error("Aucun périphérique trouvé (device est null ou undefined).");
-        return;
+    let found = false;
+    for (const iface of device.interfaces) {
+        try {
+            device.set_interface(iface.number);
+            // Envoi d'une commande test (ex : un paquet vide ou spécifique)
+            device.write([0x00, 0x00, ...], 64);
+            console.log("Interface fonctionnelle trouvée:", iface.number);
+            found = true;
+            break;
+        } catch (e) {
+            console.log("Interface non fonctionnelle:", iface.number);
+        }
     }
-
-    // device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // exemple, à adapter selon ton device
-
-    // Ici tu peux initialiser d'autres choses, ex:
-    // setModeLogiciel();
-    // initialiser ton clavier...
-
-    console.log("Périphérique prêt : " + device.productId());
+    if (!found) {
+        console.error("Aucune interface fonctionnelle détectée");
+    }
 }
 
 // --- Fonction validation ---
