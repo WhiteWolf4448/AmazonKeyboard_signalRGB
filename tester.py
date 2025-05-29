@@ -9,7 +9,7 @@ import sys
 import json
 import threading
 import queue
-
+import logging
 
 
 # Chargement de hid.dll
@@ -68,8 +68,6 @@ map2 = [
     ['M4', 'Shift_L', '<', 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', ':', '!', 'Shift_R',                           '↑',                            '1_P',     '2_P', '3_P'],
     ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr',  'Fn', 'Menu', 'Ctrl_R',                     '←',            '↓',            '→',            '0_P',            '._P', 'Enter']
 ]
-
-print("Nombre de touches principales:", len(map2))
 
 touches_actives = [
     'Esc',
@@ -216,7 +214,7 @@ def open_hid_device(path):
 
 def sendColor(hexstream):
     # Données brutes (extraites de ton code)
-    req1 = bytes.fromhex("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")     # 128 bytes
+    req1 = bytes.fromhex("09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")     # 128 bytes
     req2 = bytes.fromhex("140100010103ffffff09000001000000034283")  # 83 bytes (Feature Report)
     req3 = bytes.fromhex("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
     req4 = bytes.fromhex(hexstream)  # Report ID 32, 400 bytes (Feature Report)
@@ -224,15 +222,15 @@ def sendColor(hexstream):
 
     # Envoi dans le bon ordre
     send_output_report(device, req1)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_feature_report(device, req2)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_output_report(device, req3)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_feature_report(device, req4)
     time.sleep(0.01)
     send_output_report(device, req5)
-    time.sleep(0.01)
+    time.sleep(0.005)
 
 
 # Ouvre ton périphérique HID (chemin à adapter avec ton device path réel)
@@ -296,6 +294,10 @@ def couleurs_vers_sequence_hex(couleurs):
 
 app = Flask(__name__)
 
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)  # Met à ERROR pour cacher les accès normaux (200)
+
+
 send_lock = threading.Lock()  # Pour protéger l'accès à latest_sequence
 latest_sequence = None  # Stocke la dernière couleur à envoyer
 
@@ -310,10 +312,10 @@ def worker_send_colors():
         if sequence_to_send is not None:
             sendColor(sequence_to_send)  # ta fonction bloquante qui envoie au clavier
             # Optionnel, éviter saturation (ajuste selon besoin)
-            time.sleep(0.01)
+            time.sleep(0.001)
         else:
             # Pas de nouvelle couleur, on attend un peu
-            time.sleep(0.05)
+            time.sleep(0.001)
 
 @app.route('/set_color')
 def set_color():
