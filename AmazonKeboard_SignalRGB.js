@@ -55,12 +55,12 @@ export function Initialize() {
     // if (!found) {
     //     console.error("Aucune interface fonctionnelle détectée");
     // }
-	device.set_endpoint(0, 0x0006, 0x0001, 0x0005); // Assure que l'interface est correctement définie
+	device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // Assure que l'interface est correctement définie
 }
 
 // --- Fonction validation ---
 export function Validate(endpoint) {
-	return endpoint.interface === 0 && endpoint.usage === 0 && endpoint.usage_page === 0;
+	return endpoint.interface === 0 && endpoint.usage === 0x0006 && endpoint.usage_page === 0x0001;
 }
 
 
