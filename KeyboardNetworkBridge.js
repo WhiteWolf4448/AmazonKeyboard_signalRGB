@@ -172,7 +172,7 @@ export function DiscoveryService() {
 
     // Un device fixe défini une fois pour toutes
     const myDevice = new MyDevice();
-    this.deviceSettings = service.getSetting(); // Nom du device dans SignalRGB
+    this.deviceSettings = service.getSetting(myDevice.name, myDevice.id, myDevice.ledCount); // Nom du device dans SignalRGB
     this.connect = function () {
         service.log("Connect called");
         // Ici tu pourrais lancer la connexion vers ton programme Python
