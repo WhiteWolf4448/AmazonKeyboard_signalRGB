@@ -11,7 +11,7 @@ Item {
     
 }
     Timer {
-        interval: 5000  // 5 secondes
+        interval: 2000  // 5 secondes
         running: true
         repeat: false  // ne tourne qu’une fois
         onTriggered: {

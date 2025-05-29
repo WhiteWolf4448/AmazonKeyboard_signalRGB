@@ -159,13 +159,14 @@ export function DiscoveryService() {
     this.Initialize = function () {
         service.log("Initializing Plugin!");
         service.log("Searching for WLED devices...");
-        qmlObj.myVar = device;
     };
 
 
     this.Update = function () {
         return;
     };
+
+    this.deviceName = "Mon Device Python"; // Nom du device dans SignalRGB
 
     // Un device fixe défini une fois pour toutes
     const myDevice = new MyDevice();
