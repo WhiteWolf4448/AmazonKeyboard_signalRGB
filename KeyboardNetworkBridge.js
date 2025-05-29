@@ -36,15 +36,14 @@ export function Initialize() {
 
 export function DiscoveryService() {
     console.log("Initialisation du pont réseau Amazon K88");
-    sendColorUpdate("65421")
-    sendColorUpdate("65421")
-    sendColorUpdate("65421")
 }
 
-    function SetupChannel() {
-		device.SetLedLimit(110);
-		device.addChannel("Mon Device Python", 110);
-	}
+function SetupChannel() {
+	device.SetLedLimit(110);
+	device.addChannel("Mon Device Python", 110);
+}
+
+
 
 
 function sendColorUpdate(color) {
@@ -75,9 +74,7 @@ export function Render() {
 }
 
 export function Shutdown() {
-    device.pause(250);
-    let color = hexToRgb(shutdownColor);
-    protocol.setColors(color[0], color[1], color[2]);
+    return null
 }
 
 function flattenMap2() {
@@ -186,8 +183,18 @@ export function DiscoveryService() {
         service.log(`Device ${myDevice.name} added`);
         service.announceController(myDevice);
         service.log(`Device ${myDevice.name} added and announced`);
+        service.saveSetting(myDevice.name);
+		service.updateController(myDevice);
+		service.announceController(myDevice);
     };
 }
+
+function saveController() {
+		service.saveSetting(this.name);
+		service.updateController(this);
+		service.announceController(this);
+		this.connected = true;
+	}
 
 
 
