@@ -55,6 +55,7 @@ export function Initialize() {
     // if (!found) {
     //     console.error("Aucune interface fonctionnelle détectée");
     // }
+	device.set_interface(0, 0x0006, 0x0001); // Assure que l'interface est correctement définie
 }
 
 // --- Fonction validation ---
@@ -106,7 +107,6 @@ export function Render() {
 	console.log("Device:", device);
     if (!device) {
     console.error("Device non initialisé");
-	return;
 	}
 
     const pad = (data, length) => {
