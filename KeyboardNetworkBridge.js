@@ -17,10 +17,9 @@ let uniqueSubdeviceLedPosition = [];
 let subdeviceLedsCount = [];
 let subdevices = [];
 
-export function Initialize() {
-    console.log("Initialisation du pont réseau Amazon K88");
-	sendColorUpdate("ffffff")
-}
+exports.Initialize = function(device) {
+    console.log("Device initialized !");
+};
 
 
 
