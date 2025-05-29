@@ -111,16 +111,27 @@ function insererZeros(sequence, indices) {
 
 function reorganizeColors(rgbArray) {
     const ledCount = rgbArray.length / 3;
+
     const reds = [];
     const greens = [];
     const blues = [];
 
+    // Séparer les canaux
     for (let i = 0; i < ledCount; i++) {
         reds.push(rgbArray[i * 3]);
         greens.push(rgbArray[i * 3 + 1]);
         blues.push(rgbArray[i * 3 + 2]);
     }
 
-    return reds.concat(greens, blues);
+    // Fonction utilitaire : convertit un entier [0-255] en hex sur 2 caractères
+    const toHex = (n) => n.toString(16).padStart(2, '0');
+
+    // Convertir chaque tableau en chaîne hex (2 chars par couleur)
+    const redsHex = reds.map(toHex).join('');
+    const greensHex = greens.map(toHex).join('');
+    const bluesHex = blues.map(toHex).join('');
+
+    // Concaténer dans l’ordre RRR... GGG... BBB...
+    return redsHex + greensHex + bluesHex;
 }
 
