@@ -153,9 +153,7 @@ class MyDevice {
     }
 }
 
-function myJsFunction(qmlObj) {
-    qmlObj.myVar = device;
-}
+
 
 export function DiscoveryService() {
 
@@ -170,11 +168,11 @@ export function DiscoveryService() {
         return;
     };
 
-    this.deviceName = device; // Nom du device dans SignalRGB
+    
 
     // Un device fixe défini une fois pour toutes
     const myDevice = new MyDevice();
-
+    this.deviceSettings = service.getSetting(); // Nom du device dans SignalRGB
     this.connect = function () {
         service.log("Connect called");
         // Ici tu pourrais lancer la connexion vers ton programme Python
