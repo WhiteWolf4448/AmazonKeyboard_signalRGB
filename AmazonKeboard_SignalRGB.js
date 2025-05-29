@@ -39,22 +39,22 @@ const map2 = [
 
 // --- Fonction appelée après validation ---
 export function Initialize() {
-    let found = false;
-    for (const iface of device.interfaces) {
-        try {
-            device.set_interface(iface.number);
-            // Envoi d'une commande test (ex : un paquet vide ou spécifique)
-            device.write(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64);
-            console.log("Interface fonctionnelle trouvée:", iface.number);
-            found = true;
-            break;
-        } catch (e) {
-            console.log("Interface non fonctionnelle:", iface.number);
-        }
-    }
-    if (!found) {
-        console.error("Aucune interface fonctionnelle détectée");
-    }
+    // let found = false;
+    // for (const iface of device.interfaces) {
+    //     try {
+    //         device.set_interface(iface.number);
+    //         // Envoi d'une commande test (ex : un paquet vide ou spécifique)
+    //         device.write(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64);
+    //         console.log("Interface fonctionnelle trouvée:", iface.number);
+    //         found = true;
+    //         break;
+    //     } catch (e) {
+    //         console.log("Interface non fonctionnelle:", iface.number);
+    //     }
+    // }
+    // if (!found) {
+    //     console.error("Aucune interface fonctionnelle détectée");
+    // }
 }
 
 // --- Fonction validation ---
