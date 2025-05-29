@@ -88,8 +88,7 @@ export function LedPositions() {
 
 // --- Envoie les couleurs au clavier ---
 export function Render() {
-    console.log("Render called");
-
+	console.log("Device:", this.device);
     if (!this.device) return;
 
     const pad = (data, length) => {
