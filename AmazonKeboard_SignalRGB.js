@@ -50,8 +50,7 @@ function generateColorData() {
         let b = (i % 3 === 2) ? 255 : 0;
         colors.push(r, g, b);
     }
-	console.log(length(colors));
-    return insererZeros(colors, indices);
+    return insererZeros(reorganizeColors(colors), indices);
 }
 
 export function LedNames() {
@@ -107,5 +106,20 @@ function insererZeros(sequence, indices) {
         sequenceListe[0] = '2';
     }
     return sequenceListe.join("");
+}
+
+function reorganizeColors(rgbArray) {
+    const ledCount = rgbArray.length / 3;
+    const reds = [];
+    const greens = [];
+    const blues = [];
+
+    for (let i = 0; i < ledCount; i++) {
+        reds.push(rgbArray[i * 3]);
+        greens.push(rgbArray[i * 3 + 1]);
+        blues.push(rgbArray[i * 3 + 2]);
+    }
+
+    return reds.concat(greens, blues);
 }
 
