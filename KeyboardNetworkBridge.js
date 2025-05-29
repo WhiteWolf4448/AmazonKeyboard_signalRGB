@@ -46,13 +46,13 @@ export function DiscoveryService() {
 
 function sendColorUpdate(color) {
 
-
+    const componentChannel = device.channel(this.name);
     if (false) {
         RGBData = device.createColorArray("#000000", ChannelLedCount, "Inline");
     } else if (LightingMode === "Forced") {
         RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
     } else if (componentChannel.shouldPulseColors()) {
-        ChannelLedCount = this.deviceledcount;
+        let ChannelLedCount = 110;
 
         const pulseColor = device.getChannelPulseColor(this.name);
         RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
