@@ -50,7 +50,7 @@ function generateColorData() {
         let b = (i % 3 === 2) ? 255 : 0;
         colors.push(r, g, b);
     }
-	console.log(reorganizeColors(colors));
+	console.log(insererZeros(reorganizeColors(colors), indices));
     return insererZeros(reorganizeColors(colors), indices);
 }
 
