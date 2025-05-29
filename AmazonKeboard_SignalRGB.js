@@ -1,7 +1,7 @@
 // --- Métadonnées ---
 export function Name() { return "MonClavierPlugin"; }
-export function VendorId() { return 0x1234; }       // Remplace par ton vendor ID
-export function ProductId() { return 0x5678; }      // Remplace par ton product ID
+export function VendorId() { return 0x3938; }       // Remplace par ton vendor ID
+export function ProductId() { return 0x1150; }      // Remplace par ton product ID
 export function Publisher() { return "Moi"; }
 export function Documentation() { return ""; }
 export function Size() { return [1,1]; }
