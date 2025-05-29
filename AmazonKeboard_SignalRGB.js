@@ -39,28 +39,12 @@ const map2 = [
 
 // --- Fonction appelée après validation ---
 export function Initialize() {
-    // let found = false;
-    // for (const iface of device.interfaces) {
-    //     try {
-    //         device.set_interface(iface.number);
-    //         // Envoi d'une commande test (ex : un paquet vide ou spécifique)
-    //         device.write(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64);
-    //         console.log("Interface fonctionnelle trouvée:", iface.number);
-    //         found = true;
-    //         break;
-    //     } catch (e) {
-    //         console.log("Interface non fonctionnelle:", iface.number);
-    //     }
-    // }
-    // if (!found) {
-    //     console.error("Aucune interface fonctionnelle détectée");
-    // }
-	device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // Assure que l'interface est correctement définie
+    
 }
 
 // --- Fonction validation ---
 export function Validate(endpoint) {
-	return endpoint.interface === 0 && endpoint.usage === 0x0006 && endpoint.usage_page === 0x0001;
+	return true;
 }
 
 
@@ -104,28 +88,7 @@ export function LedPositions() {
 
 // --- Envoie les couleurs au clavier ---
 export function Render() {
-	console.log("Device:", device);
-    if (!device) {
-    console.error("Device non initialisé");
-	}
-
-    const pad = (data, length) => {
-        while (data.length < length) data.push(0);
-        return data;
-    };
-
-    const reports = [
-        pad(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
-        pad(hexStringToByteArray("140100010103ffffff09000001000000034283"), 19),
-        pad(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
-        pad(hexStringToByteArray(generateColorData()), 400),
-        pad(hexStringToByteArray("09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
-    ];
-	device.send_report(reports[0], 64); // Envoi du premier rapport pour initialiser le clavier
-	device.send_report(reports[1], 19);
-	device.send_report(reports[2], 64);
-	device.send_report(reports[3], 400);
-	device.send_report(reports[4], 64);
+	sendColorsToPython(generateColorData());
 }
 
 
@@ -180,4 +143,18 @@ function hexStringToByteArray(hexString) {
         bytes.push(parseInt(hexString.substr(i, 2), 16));
     }
     return bytes;
+}
+
+function sendColorsToPython(rgbHex) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://127.0.0.1:5000/leds", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log("Réponse du serveur Python :", xhr.responseText);
+    }
+  };
+
+  xhr.send(JSON.stringify({ colors: rgbHex }));
 }
