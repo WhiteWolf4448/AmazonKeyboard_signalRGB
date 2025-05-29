@@ -27,6 +27,7 @@ export function Initialize() {
 
 // --- Fonction validation ---
 export function Validate(endpoint) {
+	return endpoint.interface === 0 && endpoint.usage === 0 && endpoint.usage_page === 0;
 }
 
 
