@@ -27,6 +27,7 @@ export function ControllableParameters() {
 
 
 // --- Variables globales ---
+const py = null; // Variable pour le processus Python
 const LED_COUNT = 110;
 const indices = [0, 1, 8, 9, 46, 47, 84, 85, 120, 121, 122, 123, 158, 159, 160, 161, 164, 165, 196, 197, 198, 199, 230, 231, 234, 235, 236, 237, 240, 241, 242, 243, 244, 245, 246, 247, 252, 253, 254, 255, 256, 257, 262, 263, 264, 265, 266, 267, 274, 275, 312, 313, 350, 351, 386, 387, 388, 389, 424, 425, 426, 427, 430, 431, 462, 463, 464, 465, 496, 497, 500, 501, 502, 503, 506, 507, 508, 509, 510, 511, 512, 513, 518, 519, 520, 521, 522, 523, 528, 529, 530, 531, 532, 533, 540, 541, 578, 579, 616, 617, 652, 653, 654, 655, 690, 691, 692, 693, 696, 697, 728, 729, 730, 731, 762, 763, 766, 767, 768, 769, 772, 773, 774, 775, 776, 777, 778, 779, 784, 785, 786, 787, 788, 789, 794, 795, 796, 797, 798, 799]
 const map2 = [
@@ -42,7 +43,7 @@ const map2 = [
 // --- Fonction appelée après validation ---
 export function Initialize() {
     const { spawn } = require('child_process');
-	const py = spawn('python', ['-u', 'render.py']);
+	py = spawn('python', ['-u', 'render.py']);
 
 	py.stdout.on('data', (data) => {
 	console.log('Réponse Python:', data.toString());
