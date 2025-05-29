@@ -24,16 +24,7 @@ export function ControllableParameters() {
   return params;
 }
 
-const { spawn } = require('child_process');
-const py = spawn('python', ['-u', 'render.py']);
 
-py.stdout.on('data', (data) => {
-  console.log('Réponse Python:', data.toString());
-});
-
-py.stderr.on('data', (data) => {
-  console.error('Erreur Python:', data.toString());
-});
 
 // --- Variables globales ---
 const LED_COUNT = 110;
@@ -50,24 +41,18 @@ const map2 = [
 
 // --- Fonction appelée après validation ---
 export function Initialize() {
-    // let found = false;
-    // for (const iface of device.interfaces) {
-    //     try {
-    //         device.set_interface(iface.number);
-    //         // Envoi d'une commande test (ex : un paquet vide ou spécifique)
-    //         device.write(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64);
-    //         console.log("Interface fonctionnelle trouvée:", iface.number);
-    //         found = true;
-    //         break;
-    //     } catch (e) {
-    //         console.log("Interface non fonctionnelle:", iface.number);
-    //     }
-    // }
-    // if (!found) {
-    //     console.error("Aucune interface fonctionnelle détectée");
-    // }
-	device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // Assure que l'interface est correctement définie
-}
+    const { spawn } = require('child_process');
+	const py = spawn('python', ['-u', 'render.py']);
+
+	py.stdout.on('data', (data) => {
+	console.log('Réponse Python:', data.toString());
+	});
+
+	py.stderr.on('data', (data) => {
+	console.error('Erreur Python:', data.toString());
+	});
+		// device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // Assure que l'interface est correctement définie
+	}
 
 // --- Fonction validation ---
 export function Validate(endpoint) {
