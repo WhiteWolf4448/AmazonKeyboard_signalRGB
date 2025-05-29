@@ -5,11 +5,13 @@ Item {
     width: 200
     height: 100
 
+    signal connectRequested()
+
     Button {
         text: "Connect"
         anchors.centerIn: parent
         onClicked: {
-            console.log("Connect button clicked")
+            connectRequested()
         }
     }
 }
