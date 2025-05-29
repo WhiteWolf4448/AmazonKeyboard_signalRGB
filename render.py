@@ -1,3 +1,4 @@
+from flask import Flask, request
 import ctypes
 import time
 import msvcrt
@@ -6,6 +7,9 @@ import colorsys
 import math
 import sys
 import json
+import threading
+import queue
+import logging
 
 
 # Chargement de hid.dll
@@ -64,8 +68,6 @@ map2 = [
     ['M4', 'Shift_L', '<', 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', ':', '!', 'Shift_R',                           '↑',                            '1_P',     '2_P', '3_P'],
     ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr',  'Fn', 'Menu', 'Ctrl_R',                     '←',            '↓',            '→',            '0_P',            '._P', 'Enter']
 ]
-
-print("Nombre de touches principales:", len(map2))
 
 touches_actives = [
     'Esc',
@@ -180,6 +182,11 @@ touches_actives = [
     '1_P',
 ]
 
+all_keys = []
+for section in [map2]:
+    for row in section:
+        all_keys.extend(row)
+
 index_touches_actives = {t: i for i, t in enumerate(touches_actives)}
 
 def open_hid_device(path):
@@ -207,7 +214,7 @@ def open_hid_device(path):
 
 def sendColor(hexstream):
     # Données brutes (extraites de ton code)
-    req1 = bytes.fromhex("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")     # 128 bytes
+    req1 = bytes.fromhex("09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")     # 128 bytes
     req2 = bytes.fromhex("140100010103ffffff09000001000000034283")  # 83 bytes (Feature Report)
     req3 = bytes.fromhex("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
     req4 = bytes.fromhex(hexstream)  # Report ID 32, 400 bytes (Feature Report)
@@ -215,15 +222,15 @@ def sendColor(hexstream):
 
     # Envoi dans le bon ordre
     send_output_report(device, req1)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_feature_report(device, req2)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_output_report(device, req3)
-    time.sleep(0.01)
+    time.sleep(0.005)
     send_feature_report(device, req4)
     time.sleep(0.01)
     send_output_report(device, req5)
-    time.sleep(0.01)
+    time.sleep(0.005)
 
 
 # Ouvre ton périphérique HID (chemin à adapter avec ton device path réel)
@@ -285,23 +292,50 @@ def couleurs_vers_sequence_hex(couleurs):
     b_hex = ''.join(f'{b:02x}' for _, _, b in couleurs)
     return r_hex + g_hex + b_hex
 
+app = Flask(__name__)
 
-for line in sys.stdin:
-    try:
-        data = json.loads(line)
-        colors_hex = data.get("colors")  # chaîne hex, ex: 'ff00ff...'
-        if colors_hex:
-            # Convertir string hex en liste d'entiers
-            colors_bytes = [int(colors_hex[i:i+2], 16) for i in range(0, len(colors_hex), 2)]
-            packet = [0x00] + colors_bytes
-            # Ensuite tu envoies packet vers le périphérique HID
-            sendColor(colors_hex)
-            print(json.dumps({"status": "ok"}))
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)  # Met à ERROR pour cacher les accès normaux (200)
+
+
+send_lock = threading.Lock()  # Pour protéger l'accès à latest_sequence
+latest_sequence = None  # Stocke la dernière couleur à envoyer
+
+def worker_send_colors():
+    global latest_sequence
+    while True:
+        send_lock.acquire()
+        sequence_to_send = latest_sequence
+        latest_sequence = None  # On vide la variable dès qu'on récupère la couleur à envoyer
+        send_lock.release()
+
+        if sequence_to_send is not None:
+            sendColor(sequence_to_send)  # ta fonction bloquante qui envoie au clavier
+            # Optionnel, éviter saturation (ajuste selon besoin)
+            time.sleep(0.001)
         else:
-            print(json.dumps({"status": "no data"}))
-    except Exception as e:
-        print(json.dumps({"status": "error", "message": str(e)}))
+            # Pas de nouvelle couleur, on attend un peu
+            time.sleep(0.001)
 
+@app.route('/set_color')
+def set_color():
+    global latest_sequence
+    color = request.args.get('color')
+    values = list(map(int, color.split(',')))
+    leds = [tuple(values[i:i+3]) for i in range(0, len(values), 3)]
 
+    couleurs_finales = reorder_colors_by_physique_order(
+        leds.copy(), all_keys, index_touches_actives
+    )
+    sequence_hex = couleurs_vers_sequence_hex(couleurs_finales)
+    sequence_modifiee = inserer_zeros(sequence_hex, indices)
 
+    send_lock.acquire()
+    latest_sequence = sequence_modifiee  # On remplace la dernière couleur
+    send_lock.release()
 
+    return "OK", 200
+
+if __name__ == '__main__':
+    threading.Thread(target=worker_send_colors, daemon=True).start()
+    app.run(port=5000)

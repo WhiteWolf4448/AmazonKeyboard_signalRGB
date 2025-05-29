@@ -1,3 +1,8 @@
 Test.js
 log.txt
 amazon_keboard_signal_rgb.js
+test.py
+build/
+dist/
+Server.bat
+Server.spec
