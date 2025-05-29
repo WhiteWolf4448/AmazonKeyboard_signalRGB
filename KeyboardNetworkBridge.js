@@ -51,7 +51,7 @@ function sendColorUpdate(color) {
 
     const componentChannel = device.channel("Mon Device Python");
 
-    RGBData = componentChannel.getColors("Inline");
+    let RGBData = componentChannel.getColors("Inline");
 
 
     const xhr = new XMLHttpRequest();
