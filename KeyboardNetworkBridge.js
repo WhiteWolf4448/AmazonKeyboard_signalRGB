@@ -77,10 +77,6 @@ export function Shutdown() {
     return null
 }
 
-export function Update() {
-    return null
-}
-
 function flattenMap2() {
     let keys = [];
     for (let row of map2) {
@@ -153,13 +149,17 @@ class MyDevice {
     }
 }
 
+function myJsFunction(qmlObj) {
+    qmlObj.myVar = device;
+}
 
-export function DiscoveryService(qmlObj) {
-    this.qmlObj = qmlObj;
-    this.qmlObj.myVar = device;
+export function DiscoveryService() {
+
+    
     this.Initialize = function () {
         service.log("Initializing Plugin!");
         service.log("Searching for WLED devices...");
+        qmlObj.myVar = device;
     };
 
 
