@@ -1,6 +1,6 @@
 Item {
     property string pythonProcess: ""
-    property bool connected: false
+    property bool connected: true
 
 
 
