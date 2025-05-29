@@ -26,7 +26,10 @@ export function Initialize() {
 }
 
 export function DiscoveryService() {
-    return null;
+    console.log("Initialisation du pont réseau Amazon K88");
+	sendColorUpdate("65421")
+    sendColorUpdate("65421")
+    sendColorUpdate("65421")
 }
 
 
