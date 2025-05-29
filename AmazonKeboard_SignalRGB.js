@@ -46,7 +46,7 @@ export function Initialize() {
         return;
     }
 
-    device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // exemple, à adapter selon ton device
+    // device.set_endpoint(0, 0x0006, 0x0001, 0x0001); // exemple, à adapter selon ton device
 
     // Ici tu peux initialiser d'autres choses, ex:
     // setModeLogiciel();
