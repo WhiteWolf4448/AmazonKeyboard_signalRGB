@@ -1,17 +1,24 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.0
-
 Item {
-    width: 200
-    height: 100
-
-    signal connectRequested()
+    property string pythonProcess: ""
+    property bool connected: false
 
     Button {
-        text: "Connect"
-        anchors.centerIn: parent
+        text: "Lancer Python"
         onClicked: {
-            connectRequested()
+            service.startProcess("python3", ["server.py"]);
+            connected = true;
+        }
+    }
+
+    Button {
+        text: "Envoyer commande"
+        enabled: connected
+        onClicked: {
+            // Exemple de communication via HTTP ou websocket
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/do", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ action: "on" }));
         }
     }
 }
