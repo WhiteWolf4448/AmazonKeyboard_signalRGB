@@ -1,10 +1,10 @@
 // --- Métadonnées ---
-export function Name() { return "MonClavierPlugin"; }
+export function Name() { return "Amazon basics Keyboard"; }
 export function VendorId() { return 0x3938; }       // Remplace par ton vendor ID
 export function ProductId() { return 0x1150; }      // Remplace par ton product ID
-export function Publisher() { return "Moi"; }
+export function Publisher() { return "Frongus"; }
 export function Documentation() { return ""; }
-export function Size() { return [1,1]; }
+export function Size() { return [21,7]; }
 export function ControllableParameters() {
   const params = [];
   for (let row = 0; row < map2.length; row++) {
@@ -38,8 +38,8 @@ const map2 = [
 
 
 // --- Fonction appelée après validation ---
-export function Initialize() {
-
+export function Initialize(device) {
+	this.device = device; // on stocke l'objet device
 }
 
 // --- Fonction validation ---
@@ -88,23 +88,28 @@ export function LedPositions() {
 
 // --- Envoie les couleurs au clavier ---
 export function Render() {
-	console.log("Render called");
-    const colorData = generateColorData(); // retourne un tableau de 330 octets (RGB)
+    console.log("Render called");
+
+    if (!this.device) return;
 
     const pad = (data, length) => {
         while (data.length < length) data.push(0);
         return data;
     };
 
-    return {
-        reports: [
-            { endpoint: 0, data: pad(["09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], 64) },
-            { endpoint: 0, data: pad(["140100010103ffffff09000001000000034283"], 19) },
-            { endpoint: 0, data: pad(["09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], 64) },
-            { endpoint: 0, data: pad(colorData, 400) },
-            { endpoint: 0, data: pad(["09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], 64) }
-        ]
-    };
+    const reports = [
+        pad(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
+        pad(hexStringToByteArray("140100010103ffffff09000001000000034283"), 19),
+        pad(hexStringToByteArray("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
+        pad(hexStringToByteArray(generateColorData()), 400),
+        pad(hexStringToByteArray("09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
+    ];
+
+    for (const data of reports) {
+        const packet = [0x00];  // souvent un header requis, à adapter selon protocole clavier
+        packet.push(...data);
+        this.device.write(packet, packet.length);
+    }
 }
 
 
@@ -152,3 +157,11 @@ function reorganizeColors(rgbArray) {
     return redsHex + greensHex + bluesHex;
 }
 
+function hexStringToByteArray(hexString) {
+    if (hexString.length % 2 !== 0) throw "Longueur hex invalide";
+    const bytes = [];
+    for (let i = 0; i < hexString.length; i += 2) {
+        bytes.push(parseInt(hexString.substr(i, 2), 16));
+    }
+    return bytes;
+}
