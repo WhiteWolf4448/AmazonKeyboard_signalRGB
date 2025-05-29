@@ -18,7 +18,7 @@ let subdeviceLedsCount = [];
 let subdevices = [];
 
 export function Initialize() {
-	
+	sendColorUpdate("ffffff")
 }
 
 function sendColorUpdate(color) {
