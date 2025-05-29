@@ -22,14 +22,6 @@ export function Initialize() {
 	sendColorUpdate("ffffff")
 }
 
-exports.onUiReady = function(ui) {
-    console.log("UI is ready");
-
-    ui.connectRequested.connect(() => {
-        console.log("Connect button pressed");
-        connectToBridge();  // Appelle ta fonction qui fait une requête XHR
-    });
-};
 
 function connectToBridge() {
     console.log("Trying to connect to bridge...");
@@ -44,6 +36,18 @@ function connectToBridge() {
     xhr.send();
 }
 
+exports.onUiReady = function(ui) {
+    console.log("UI is ready");
+
+    if (ui.connectRequested) {
+        ui.connectRequested.connect(() => {
+            console.log("Connect button pressed");
+            connectToBridge();
+        });
+    } else {
+        console.log("connectRequested signal not found on UI");
+    }
+};
 
 function sendColorUpdate(color) {
     const xhr = new XMLHttpRequest();
