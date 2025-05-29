@@ -77,6 +77,10 @@ export function Shutdown() {
     return null
 }
 
+export function Update() {
+    return null
+}
+
 function flattenMap2() {
     let keys = [];
     for (let row of map2) {
