@@ -1,7 +1,9 @@
 {
-  "name": "Amazon K88 Network Bridge",
-  "version": "1.0",
-  "entry": "Device.js",
-  "type": "device",
-  "ui": "Amazon.qml"
+    "Name": "Amazon K88 Network Bridge",
+    "Type": "Network",
+    "VendorId": "AMAZON_K88",
+    "ProductId": "NETWORK_BRIDGE",
+    "Version": "1.0",
+    "Script": "Device.js",
+    "Ui": "Amazon.qml"
 }
