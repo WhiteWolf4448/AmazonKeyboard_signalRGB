@@ -104,7 +104,10 @@ export function LedPositions() {
 // --- Envoie les couleurs au clavier ---
 export function Render() {
 	console.log("Device:", device);
-    if (!device) return;
+    if (!device) {
+    console.error("Device non initialisé");
+	return;
+	}
 
     const pad = (data, length) => {
         while (data.length < length) data.push(0);
