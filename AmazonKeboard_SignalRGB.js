@@ -89,6 +89,9 @@ export function Initialize() {
 	}
 
 	function sendColors(colors) {
+		const WebSocket = require('ws');
+
+		const ws = new WebSocket('ws://localhost:8765');
 
 		ws.on('open', () => {
 			console.log('Connexion WebSocket établie');
