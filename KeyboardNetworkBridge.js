@@ -18,6 +18,7 @@ let subdeviceLedsCount = [];
 let subdevices = [];
 
 export function Initialize() {
+    console.log("Initialisation du pont réseau Amazon K88");
 	sendColorUpdate("ffffff")
 }
 
@@ -37,6 +38,7 @@ function sendColorUpdate(color) {
 }
 
 export function Render() {
+    console.log("Rendu du pont réseau Amazon K88");
     sendColorUpdate("ffffff")
 	
 }
