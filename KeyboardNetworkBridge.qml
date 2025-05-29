@@ -2,13 +2,7 @@ Item {
     property string pythonProcess: ""
     property bool connected: false
 
-    Button {
-        text: "Lancer Python"
-        onClicked: {
-            service.startProcess("python3", ["server.py"]);
-            connected = true;
-        }
-    }
+
 
     Button {
         text: "Envoyer commande"
