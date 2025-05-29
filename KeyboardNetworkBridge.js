@@ -140,6 +140,8 @@ export function DiscoveryService() {
     this.AddDevice = function () {
         service.addController(myDevice);
         service.log(`Device ${myDevice.name} added`);
+        service.announceController(myDevice);
+        service.log(`Device ${myDevice.name} added and announced`);
     };
 }
 
