@@ -183,8 +183,6 @@ export function DiscoveryService() {
         service.log(`Device ${myDevice.name} added`);
         service.announceController(myDevice);
         service.log(`Device ${myDevice.name} added and announced`);
-		service.updateController(myDevice);
-		service.announceController(myDevice);
     };
 }
 
