@@ -199,7 +199,6 @@ export function DiscoveryService() {
 function saveController(device) {
 		service.saveSetting(device.name, device.id, device.ledCount);
 		service.announceController(device);
-		this.connected = true;
 	}
 
 
