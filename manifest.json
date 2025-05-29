@@ -1,0 +1,7 @@
+{
+  "name": "Amazon K88 Network Bridge",
+  "version": "1.0",
+  "entry": "Device.js",
+  "type": "device",
+  "ui": "Amazon.qml"
+}
