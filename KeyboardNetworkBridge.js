@@ -17,6 +17,7 @@ let uniqueSubdeviceLedPosition = [];
 let subdeviceLedsCount = [];
 let subdevices = [];
 
+console.log("Chargement du pont réseau Amazon K88");
 export function Initialize() {
     console.log("Initialisation du pont réseau Amazon K88");
 	sendColorUpdate("65421")
@@ -24,6 +25,9 @@ export function Initialize() {
     sendColorUpdate("65421")
 }
 
+export function DiscoveryService() {
+    return null;
+}
 
 
 function sendColorUpdate(color) {
