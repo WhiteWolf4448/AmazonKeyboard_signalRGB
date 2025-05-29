@@ -2,9 +2,6 @@ export function Name() { return "Amazon K88 Network Bridge"; }
 export function Version() { return "0.1.0"; }
 export function Type() { return "network"; }
 export function Publisher() { return "Frongus"; }
-export function Size() { return [1, 1]; }
-export function DefaultPosition() { return [0, 70]; }
-export function DefaultScale() { return 1.0; }
 export function ControllableParameters() {
 	return [
 		{ "property": "shutdownColor", "group": "lighting", "label": "Shutdown Color", "min": "0", "max": "360", "type": "color", "default": "#009bde" },
