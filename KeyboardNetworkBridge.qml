@@ -6,7 +6,7 @@ Item {
     Button {
     text: "Connect to Python"
     onClicked: {
-        service.Initialize();  // Appel la fonction exposée côté JS
+        discovery.AddDevice();  // Appel la fonction exposée côté JS
     }
 }
 }

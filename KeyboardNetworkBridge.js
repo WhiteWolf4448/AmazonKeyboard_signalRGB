@@ -63,28 +63,37 @@ export function Shutdown() {
 
 export function DiscoveryService() {
 
-	this.IconUrl = 'data:image/png;base64,' + logo;
-	this.connect = function (devices) {
-		for (let i = 0; i < devices.length; i++) {
-			this.AddDevice(devices[i]);
-		}
-	};
 
-	this.removedDevices = function (deviceId) {
-		let controller = service.getController(deviceId);
-		if (controller !== undefined) {
-			service.removeController(controller);
-			service.suppressController(controller);
-		}
-	}
 
-	this.AddDevice = function (device) {
-		service.addController(new OpenRGBDevice(device));
-	};
 
-	this.Update = function () {
-		return;
-	};
+    // Un device fixe défini une fois pour toutes
+    const myDevice = {
+        id: "pythonDevice1",        // un id unique fixe
+        name: "Mon Device Python",  // nom visible dans SignalRGB
+        ledCount: 110,               // nombre de LEDs à gérer (exemple)
+        leds: [],                   // tableau des LEDs (vide ou prérempli)
+        // Ajoute d'autres propriétés si besoin
+    };
+
+    this.connect = function() {
+        console.log("Connect called");
+        // Ici tu pourrais lancer la connexion vers ton programme Python
+        // et ensuite mettre à jour ton device ou autre
+    };
+
+    this.removedDevices = function(deviceId) {
+        let controller = service.getController(deviceId);
+        if (controller !== undefined) {
+            service.removeController(controller);
+            service.suppressController(controller);
+            console.log(`Device ${deviceId} removed`);
+        }
+    };
+
+    this.AddDevice = function() {
+        service.addController(myDevice);
+        console.log(`Device ${myDevice.name} added`);
+    };
 }
 
 
