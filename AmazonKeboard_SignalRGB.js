@@ -121,11 +121,11 @@ export function Render() {
         pad(hexStringToByteArray(generateColorData()), 400),
         pad(hexStringToByteArray("09220000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"), 64),
     ];
-	device.write(reports[0], 64); // Envoi du premier rapport pour initialiser le clavier
+	device.send_report(reports[0], 64); // Envoi du premier rapport pour initialiser le clavier
 	device.send_report(reports[1], 19);
-	device.write(reports[2], 64);
+	device.send_report(reports[2], 64);
 	device.send_report(reports[3], 400);
-	device.write(reports[4], 64);
+	device.send_report(reports[4], 64);
 }
 
 
