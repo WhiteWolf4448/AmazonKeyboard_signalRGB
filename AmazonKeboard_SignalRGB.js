@@ -36,17 +36,23 @@ const map2 = [
     ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr', 'Fn', 'Menu', 'Ctrl_R', 				'←', 			'↓', 			'→', 			'0_P', 				'._P', 'Enter']
 ];
 
-let device = null;
 
 // --- Fonction appelée après validation ---
 export function Initialize() {
     console.log("Initialisation du plugin");
-    device = SignalRGB.getDevice();  // ou la bonne API pour récupérer le device
+
     if (!device) {
-        console.error("Aucun périphérique trouvé.");
+        console.error("Aucun périphérique trouvé (device est null ou undefined).");
         return;
     }
-    console.log("Périphérique connecté:", device);
+
+    device.set_endpoint(0, 0x0004, 0xffc2); // exemple, à adapter selon ton device
+
+    // Ici tu peux initialiser d'autres choses, ex:
+    // setModeLogiciel();
+    // initialiser ton clavier...
+
+    console.log("Périphérique prêt : " + device.productId());
 }
 
 // --- Fonction validation ---
