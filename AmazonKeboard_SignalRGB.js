@@ -5,7 +5,24 @@ export function ProductId() { return 0x1150; }      // Remplace par ton product 
 export function Publisher() { return "Moi"; }
 export function Documentation() { return ""; }
 export function Size() { return [1,1]; }
-export function ControllableParameters() { return []; }
+export function ControllableParameters() {
+  const params = [];
+  for (let row = 0; row < map2.length; row++) {
+    for (let col = 0; col < map2[row].length; col++) {
+      let keyName = map2[row][col];
+      if (keyName) {
+        params.push({
+          property: `key_${keyName}`,
+          group: "keys",
+          label: keyName,
+          type: "color",
+          default: "000000"
+        });
+      }
+    }
+  }
+  return params;
+}
 
 // --- Variables globales ---
 const LED_COUNT = 110;
@@ -50,7 +67,6 @@ function generateColorData() {
         let b = (i % 3 === 2) ? 255 : 0;
         colors.push(r, g, b);
     }
-	console.log(insererZeros(reorganizeColors(colors), indices));
     return insererZeros(reorganizeColors(colors), indices);
 }
 
