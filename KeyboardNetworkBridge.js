@@ -23,31 +23,6 @@ export function Initialize() {
 }
 
 
-function connectToBridge() {
-    console.log("Trying to connect to bridge...");
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:3000/test", true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            console.log("Bridge response:", xhr.responseText);
-        }
-    };
-    xhr.send();
-}
-
-exports.onUiReady = function(ui) {
-    console.log("UI is ready");
-
-    if (ui.connectRequested) {
-        ui.connectRequested.connect(() => {
-            console.log("Connect button pressed");
-            connectToBridge();
-        });
-    } else {
-        console.log("connectRequested signal not found on UI");
-    }
-};
 
 function sendColorUpdate(color) {
     const xhr = new XMLHttpRequest();
