@@ -88,6 +88,7 @@ export function LedPositions() {
 
 // --- Envoie les couleurs au clavier ---
 export function Render() {
+	console.log("Render called");
     const colorData = generateColorData(); // retourne un tableau de 330 octets (RGB)
 
     const pad = (data, length) => {
