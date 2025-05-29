@@ -31,9 +31,7 @@ let subdevices = [];
 console.log("Chargement du pont réseau Amazon K88");
 export function Initialize() {
     console.log("Initialisation du pont réseau Amazon K88");
-    sendColorUpdate("65421")
-    sendColorUpdate("65421")
-    sendColorUpdate("65421")
+    SetupChannel();
 }
 
 export function DiscoveryService() {
@@ -43,22 +41,18 @@ export function DiscoveryService() {
     sendColorUpdate("65421")
 }
 
+    function SetupChannel() {
+		device.SetLedLimit(110);
+		device.addChannel("Mon Device Python", 110);
+	}
+
 
 function sendColorUpdate(color) {
 
-    const componentChannel = device.channel(this.name);
-    if (false) {
-        RGBData = device.createColorArray("#000000", ChannelLedCount, "Inline");
-    } else if (LightingMode === "Forced") {
-        RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
-    } else if (componentChannel.shouldPulseColors()) {
-        let ChannelLedCount = 110;
+    const componentChannel = device.channel("Mon Device Python");
 
-        const pulseColor = device.getChannelPulseColor(this.name);
-        RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
-    } else {
-        RGBData = componentChannel.getColors("Inline");
-    }
+    RGBData = componentChannel.getColors("Inline");
+
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `http://localhost:5000/set_color?color=${encodeURIComponent(RGBData)}`, true);
