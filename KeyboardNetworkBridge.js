@@ -64,7 +64,9 @@ export function Shutdown() {
 export function DiscoveryService() {
 
 
-
+    this.Update = function () {
+		return;
+	};
 
     // Un device fixe défini une fois pour toutes
     const myDevice = {
