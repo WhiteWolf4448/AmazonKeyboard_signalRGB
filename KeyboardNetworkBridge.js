@@ -61,6 +61,50 @@ export function Shutdown() {
 }
 
 
+function MyDevice() {
+    this.id = "monDeviceUniqueId";       // id unique
+    this.name = "Mon Device Python";     // nom visible
+    this.ledCount = 30;                   // nombre de LEDs (ou 1 si device simple)
+
+    // Exemples de méthodes importantes que SignalRGB pourrait attendre :
+    this.getName = function() {
+        return this.name;
+    };
+
+    this.getId = function() {
+        return this.id;
+    };
+
+    this.getLedCount = function() {
+        return this.ledCount;
+    };
+
+    this.update = function() {
+        // Mise à jour des couleurs / état du device, appelé régulièrement
+        service.log(`Updating device ${this.name}`);
+
+        // Ajout / mise à jour dans SignalRGB (comme dans OpenRGBDevice)
+        const controller = service.getController(this.id);
+        if (!controller) {
+            service.addController(this);
+            service.announceController(this);
+            service.log(`Device ${this.name} ajouté`);
+        } else {
+            service.removeController(controller);
+            service.suppressController(controller);
+            service.addController(this);
+            service.announceController(this);
+            service.log(`Device ${this.name} mis à jour`);
+        }
+    };
+
+    // Optionnel : méthode pour définir les couleurs des LEDs (en fonction de ton device)
+    this.setColors = function(colors) {
+        this.colors = colors;
+        // code pour appliquer les couleurs (via python par exemple)
+        this.update();
+    };
+}
 export function DiscoveryService() {
 
 
@@ -69,13 +113,7 @@ export function DiscoveryService() {
 	};
 
     // Un device fixe défini une fois pour toutes
-    const myDevice = {
-        id: "pythonDevice1",        // un id unique fixe
-        name: "Mon Device Python",  // nom visible dans SignalRGB
-        ledCount: 110,               // nombre de LEDs à gérer (exemple)
-        leds: [],                   // tableau des LEDs (vide ou prérempli)
-        // Ajoute d'autres propriétés si besoin
-    };
+    const myDevice = new MyDevice();
 
     this.connect = function() {
         service.log("Connect called");
