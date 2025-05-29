@@ -12,12 +12,12 @@ export function ControllableParameters() {
 
 const LED_COUNT = 110;
 const map2 = [
-    [ 	   'Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12','PrintScreen', 	'ScrollLock', 	'Pause'],
-    ['M1', '²', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ')', '=', 'Backspace', 	'Insert', 		'Home', 		'PageUp', 		'NumLock',	'/_P', '*_P' ,'-_P'],
-    ['M2', 'Tab', 'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '^', '$', 'Enter_M', 	'Delete', 		'End', 			'PageDown', 	'7_P', 		'8_P', '9_P', '+_P'],
-    ['M3', 'CapsLock', 'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'ù', '*', 															'4_P', 		'5_P', '6_P'],
-    ['M4', 'Shift_L', '<', 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', ':', '!', 'Shift_R', 					'↑', 							'1_P', 		'2_P', '3_P'],
-    ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr', 'Fn', 'Menu', 'Ctrl_R', 				'←', 			'↓', 			'→', 			'0_P', 				'._P', 'Enter']
+    ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'PrintScreen', 'ScrollLock', 'Pause'],
+    ['M1', '²', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ')', '=', 'Backspace', 'Insert', 'Home', 'PageUp', 'NumLock', '/_P', '*_P', '-_P'],
+    ['M2', 'Tab', 'A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '^', '$', 'Enter_M', 'Delete', 'End', 'PageDown', '7_P', '8_P', '9_P', '+_P'],
+    ['M3', 'CapsLock', 'Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'ù', '*', '4_P', '5_P', '6_P'],
+    ['M4', 'Shift_L', '<', 'W', 'X', 'C', 'V', 'B', 'N', '?', '.', ':', '!', 'Shift_R', '↑', '1_P', '2_P', '3_P'],
+    ['M5', 'Ctrl_L', 'Win', 'Alt', 'Space', 'AltGr', 'Fn', 'Menu', 'Ctrl_R', '←', '↓', '→', '0_P', '._P', 'Enter']
 ];
 
 
@@ -47,18 +47,18 @@ export function DiscoveryService() {
 function sendColorUpdate(color) {
 
 
-    if(shutdown) {
-			RGBData = device.createColorArray("#000000", ChannelLedCount, "Inline");
-		} else if(LightingMode === "Forced") {
-			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
-		} else if(componentChannel.shouldPulseColors()) {
-			ChannelLedCount = this.deviceledcount;
+    if (false) {
+        RGBData = device.createColorArray("#000000", ChannelLedCount, "Inline");
+    } else if (LightingMode === "Forced") {
+        RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+    } else if (componentChannel.shouldPulseColors()) {
+        ChannelLedCount = this.deviceledcount;
 
-			const pulseColor = device.getChannelPulseColor(this.name);
-			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
-		} else {
-			RGBData = componentChannel.getColors("Inline");
-		}
+        const pulseColor = device.getChannelPulseColor(this.name);
+        RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
+    } else {
+        RGBData = componentChannel.getColors("Inline");
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `http://localhost:5000/set_color?color=${encodeURIComponent(RGBData)}`, true);
@@ -88,7 +88,7 @@ export function Shutdown() {
 
 function flattenMap2() {
     let keys = [];
-    for(let row of map2) {
+    for (let row of map2) {
         keys = keys.concat(row);
     }
     return keys;
