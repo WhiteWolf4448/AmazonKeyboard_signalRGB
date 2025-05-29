@@ -153,9 +153,6 @@ class MyDevice {
     }
 }
 
-function myJsFunction(qmlObj) {
-    qmlObj.myVar = device;
-}
 
 export function DiscoveryService(qmlObj) {
     this.qmlObj = qmlObj;
@@ -163,7 +160,6 @@ export function DiscoveryService(qmlObj) {
     this.Initialize = function () {
         service.log("Initializing Plugin!");
         service.log("Searching for WLED devices...");
-        qmlObj.myVar = device;
     };
 
 
