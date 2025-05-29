@@ -1,8 +1,8 @@
 import QtQuick 2.0
-
+discovery.AddDevice();  // Appel la fonction exposée côté JS
 Item {
 
-    discovery.AddDevice();  // Appel la fonction exposée côté JS
+    
     Button {
     text: "Connect to Python"
     onClicked: {
