@@ -78,7 +78,7 @@ export function DiscoveryService() {
     };
 
     this.connect = function() {
-        console.log("Connect called");
+        service.log("Connect called");
         // Ici tu pourrais lancer la connexion vers ton programme Python
         // et ensuite mettre à jour ton device ou autre
     };
@@ -88,13 +88,13 @@ export function DiscoveryService() {
         if (controller !== undefined) {
             service.removeController(controller);
             service.suppressController(controller);
-            console.log(`Device ${deviceId} removed`);
+            service.log(`Device ${deviceId} removed`);
         }
     };
 
     this.AddDevice = function() {
         service.addController(myDevice);
-        console.log(`Device ${myDevice.name} added`);
+        service.log(`Device ${myDevice.name} added`);
     };
 }
 
