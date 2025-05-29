@@ -16,6 +16,7 @@ Item {
         repeat: false  // ne tourne qu’une fois
         onTriggered: {
                 discovery.AddDevice();
+                service.log(discovery)
 
         }
 }
