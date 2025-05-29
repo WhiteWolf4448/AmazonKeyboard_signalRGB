@@ -166,7 +166,7 @@ export function DiscoveryService() {
         return;
     };
 
-    this.deviceName = "Mon Device Python"; // Nom du device dans SignalRGB
+    this.deviceName = device; // Nom du device dans SignalRGB
 
     // Un device fixe défini une fois pour toutes
     const myDevice = new MyDevice();
@@ -189,15 +189,14 @@ export function DiscoveryService() {
     this.AddDevice = function () {
         service.addController(myDevice);
         service.log(`Device ${myDevice.name} added`);
-        service.announceController(myDevice);
+        saveController(myDevice);
         service.log(`Device ${myDevice.name} added and announced`);
     };
 }
 
-function saveController() {
-		service.saveSetting(this.name);
-		service.updateController(this);
-		service.announceController(this);
+function saveController(device) {
+		service.saveSetting(device.name, device.id, device.ledCount);
+		service.announceController(device);
 		this.connected = true;
 	}
 
