@@ -5,6 +5,8 @@ import keyboard
 import colorsys
 import math
 import sys
+import asyncio
+import websockets
 import json
 
 
@@ -182,7 +184,24 @@ touches_actives = [
 
 index_touches_actives = {t: i for i, t in enumerate(touches_actives)}
 
-def open_hid_device(path):
+async def handler(websocket):
+    async for message in websocket:
+        print("Reçu du client :", message)
+        try:
+            data = json.loads(message)
+            colors = data.get("colors")
+            if colors:
+                # Ici tu traites les couleurs, envoies au périph USB HID...
+                print(f"Traitement des couleurs ({len(colors)} valeurs)")
+                # Juste un ack simple pour l'exemple
+                sendColor(data)
+                await websocket.send(json.dumps({"status": "ok"}))
+            else:
+                await websocket.send(json.dumps({"status": "error", "message": "no colors"}))
+        except Exception as e:
+            await websocket.send(json.dumps({"status": "error", "message": str(e)}))
+
+async def open_hid_device(path):
     GENERIC_READ = 0x80000000
     GENERIC_WRITE = 0x40000000
     OPEN_EXISTING = 3
@@ -205,7 +224,7 @@ def open_hid_device(path):
 
     return handle
 
-def sendColor(hexstream):
+async def sendColor(hexstream):
     # Données brutes (extraites de ton code)
     req1 = bytes.fromhex("09210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")     # 128 bytes
     req2 = bytes.fromhex("140100010103ffffff09000001000000034283")  # 83 bytes (Feature Report)
@@ -231,20 +250,20 @@ def sendColor(hexstream):
 path = r"\\?\hid#vid_3938&pid_1150&col06#6&d00621b&0&0005#{4d1e55b2-f16f-11cf-88cb-001111000030}"
 device = open_hid_device(path)
 
-def send_output_report(handle, report: bytes):
+async def send_output_report(handle, report: bytes):
     buf = ctypes.create_string_buffer(report)
     written = DWORD()
     success = kernel32.WriteFile(handle, buf, len(report), ctypes.byref(written), None)
     if not success:
         raise OSError("WriteFile failed")
 
-def send_feature_report(handle, report: bytes):
+async def send_feature_report(handle, report: bytes):
     buf = ctypes.create_string_buffer(report)
     success = hid.HidD_SetFeature(handle, buf, len(report))
     if not success:
         raise OSError("SetFeature failed")
 
-def inserer_zeros(sequence: str, indices: list[int]) -> str:
+async def inserer_zeros(sequence: str, indices: list[int]) -> str:
     sequence_liste = list(sequence)  # On travaille caractère par caractère
     for index in sorted(indices):
         if index < 0:
@@ -257,7 +276,7 @@ def inserer_zeros(sequence: str, indices: list[int]) -> str:
     
     return ''.join(sequence_liste)
 
-def reorder_colors_by_physique_order(couleurs_arc, ordre_physique, index_touches_actives):
+async def reorder_colors_by_physique_order(couleurs_arc, ordre_physique, index_touches_actives):
     """
     couleurs_arc : liste des couleurs dans l'ordre virtuel (ordre des touches actives)
     ordre_physique : liste des touches dans l'ordre physique
@@ -279,29 +298,19 @@ def reorder_colors_by_physique_order(couleurs_arc, ordre_physique, index_touches
 
     return couleurs_reordonnees
 
-def couleurs_vers_sequence_hex(couleurs):
+async def couleurs_vers_sequence_hex(couleurs):
     r_hex = ''.join(f'{r:02x}' for r, _, _ in couleurs)
     g_hex = ''.join(f'{g:02x}' for _, g, _ in couleurs)
     b_hex = ''.join(f'{b:02x}' for _, _, b in couleurs)
     return r_hex + g_hex + b_hex
 
-
-for line in sys.stdin:
-    try:
-        data = json.loads(line)
-        colors_hex = data.get("colors")  # chaîne hex, ex: 'ff00ff...'
-        if colors_hex:
-            # Convertir string hex en liste d'entiers
-            colors_bytes = [int(colors_hex[i:i+2], 16) for i in range(0, len(colors_hex), 2)]
-            packet = [0x00] + colors_bytes
-            # Ensuite tu envoies packet vers le périphérique HID
-            sendColor(colors_hex)
-            print(json.dumps({"status": "ok"}))
-        else:
-            print(json.dumps({"status": "no data"}))
-    except Exception as e:
-        print(json.dumps({"status": "error", "message": str(e)}))
+async def main():
+    async with websockets.serve(handler, "localhost", 8765):
+        print("Serveur WS lancé sur ws://localhost:8765")
+        await asyncio.Future()  # run forever
 
 
 
+if __name__ == "__main__":
+    asyncio.run(main())
 
