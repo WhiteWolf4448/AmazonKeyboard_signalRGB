@@ -1,18 +1,17 @@
+import QtQuick 2.0
+
 Item {
-    property string pythonProcess: ""
-    property bool connected: true
-
-
-
-    Button {
-        text: "Envoyer commande"
-        enabled: connected
-        onClicked: {
-            // Exemple de communication via HTTP ou websocket
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://127.0.0.1:5000/do", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify({ action: "on" }));
+    function applyColorFrame(colors) {
+        // Cette fonction est appelée automatiquement par SignalRGB à chaque frame d’effet
+        // Tu peux envoyer les couleurs à ton programme Python ici
+        for (var i = 0; i < colors.length; i++) {
+            console.log("LED " + i + ": " + colors[i].r + "," + colors[i].g + "," + colors[i].b);
         }
+    }
+
+    Component.onCompleted: {
+        console.log("PythonDevice chargé !");
+        // Tu peux aussi lancer le script Python ici si tu veux
+        // Exemple : service.startProcess("python3", ["server.py"]);
     }
 }

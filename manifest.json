@@ -1,9 +1,19 @@
 {
-    "Name": "Amazon K88 Network Bridge",
-    "Type": "Network",
-    "VendorId": "AMAZON_K88",
-    "ProductId": "NETWORK_BRIDGE",
-    "Version": "1.0",
-    "Script": "Device.js",
-    "Ui": "Amazon.qml"
+  "Name": "PythonRGBDevice",
+  "Description": "Expose un device Python en tant que périphérique RGB virtuel",
+  "Author": "Toi",
+  "Version": "1.0",
+  "MainQML": "main.qml",
+  "Devices": [
+    {
+      "Name": "PythonDevice",
+      "Type": "LedStrip",
+      "LEDs": [
+        { "X": 0, "Y": 0 },
+        { "X": 1, "Y": 0 },
+        { "X": 2, "Y": 0 },
+        { "X": 3, "Y": 0 }
+      ]
+    }
+  ]
 }
