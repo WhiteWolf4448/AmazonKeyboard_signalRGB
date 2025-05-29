@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import "KeyboardNetworkBridge.js" as MyJS
 
 Item {
     id: root
