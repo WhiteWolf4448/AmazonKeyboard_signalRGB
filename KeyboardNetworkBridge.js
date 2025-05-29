@@ -45,8 +45,23 @@ export function DiscoveryService() {
 
 
 function sendColorUpdate(color) {
+
+
+    if(shutdown) {
+			RGBData = device.createColorArray("#000000", ChannelLedCount, "Inline");
+		} else if(LightingMode === "Forced") {
+			RGBData = device.createColorArray(forcedColor, ChannelLedCount, "Inline");
+		} else if(componentChannel.shouldPulseColors()) {
+			ChannelLedCount = this.deviceledcount;
+
+			const pulseColor = device.getChannelPulseColor(this.name);
+			RGBData = device.createColorArray(pulseColor, ChannelLedCount, "Inline");
+		} else {
+			RGBData = componentChannel.getColors("Inline");
+		}
+
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `http://localhost:5000/set_color?color=${encodeURIComponent(color)}`, true);
+    xhr.open("GET", `http://localhost:5000/set_color?color=${encodeURIComponent(RGBData)}`, true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -100,7 +115,7 @@ class MyDevice {
     constructor(device) {
         this.id = "monDeviceUniqueId";       // id unique
         this.name = "Mon Device Python";     // nom visible
-        this.ledCount = 30;                   // nombre de LEDs (ou 1 si device simple)
+        this.ledCount = 110;                   // nombre de LEDs (ou 1 si device simple)
 
         // Exemples de méthodes importantes que SignalRGB pourrait attendre :
         this.getName = function () {
