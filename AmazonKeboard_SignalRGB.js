@@ -91,29 +91,20 @@ export function Render() {
 
 
 function insererZeros(sequence, indices) {
-	console.log(typeof sequence);  // Pour voir le type réel
-    const sequenceListe = sequence.split(""); // Convertir en tableau de caractères
+    // sequence est un tableau ici, donc on copie simplement
+    const sequenceListe = Array.isArray(sequence) ? [...sequence] : sequence.split("");
 
-    // Trier les indices pour insérer dans l'ordre croissant
-    const sortedIndices = [...indices].sort((a, b) => a - b);
+    // on trie les indices
+    indices.sort((a, b) => a - b);
 
-    for (let i = 0; i < sortedIndices.length; i++) {
-        const index = sortedIndices[i];
-
-        if (index < 0) {
-            throw new Error(`Index ${index} invalide : doit être ≥ 0`);
-        }
-        if (index > sequenceListe.length) {
-            throw new Error(`Index ${index} hors limites : longueur max ${sequenceListe.length}`);
-        }
-
-        sequenceListe.splice(index, 0, "0"); // Insertion de "0" à l'index donné
+    for (const index of indices) {
+        if (index < 0) throw new Error(`Index ${index} invalide : doit être ≥ 0`);
+        if (index > sequenceListe.length) throw new Error(`Index ${index} hors limites : longueur max ${sequenceListe.length}`);
+        sequenceListe.splice(index, 0, "0"); // insérer '0' à la position index
     }
-
     if (sequenceListe.length > 0) {
-        sequenceListe[0] = "2";
+        sequenceListe[0] = '2';
     }
-
     return sequenceListe.join("");
 }
 
